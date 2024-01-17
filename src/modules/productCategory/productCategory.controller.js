@@ -114,12 +114,18 @@ export const getAllCategories = asyncHandeller(async (req , res , next) => {
       const dataAfterTranslate=[];
       for (const category of ctegories) {
         const _id = category._id;
-        const name = await translate(category.name , lang);
+        let name;
+        if(await translate(category.name , lang) == 'بلح'){
+          name = 'تمور'
+        }else{
+          name = await translate(category.name , lang);
+        }
         const slug = await translate(category.slug , lang);
         const image = category.image;
         const customId = category.customId;
         dataAfterTranslate.push({_id , name , slug , customId , image});
       }
+      
       return res.status(200).json({message:'success', ctegories:dataAfterTranslate});
     }
     return res.status(200).json({message:'success' , ctegories});
@@ -160,6 +166,9 @@ export const getOneCategory = asyncHandeller(async(req , res , next) => {
             Products.push({_id , name , slug , description , customId , images , categoryId});
           }
           dataAfterTranslate.Products = Products;
+        }
+        if(dataAfterTranslate.name == 'بلح'){
+          dataAfterTranslate.name= 'تمور';
         }
       return res.status(200).json({message:'success', category:dataAfterTranslate});
     }
