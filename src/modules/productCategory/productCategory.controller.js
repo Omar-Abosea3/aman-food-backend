@@ -106,7 +106,11 @@ export const updateCategory = asyncHandeller(async (req, res, next) => {
 
 export const getAllCategories = asyncHandeller(async (req , res , next) => {
     const {lang} = req.query;
-    const ctegories = await categoryModel.find();
+    const ctegories = await categoryModel.find().populate([
+      {
+        path:'Products'
+      }
+    ]);
     if(ctegories.length == 0){
         return next(new Error('not found categories' , {cause:404}));
     }
