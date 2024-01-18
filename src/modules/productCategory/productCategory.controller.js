@@ -114,7 +114,7 @@ export const getAllCategories = asyncHandeller(async (req , res , next) => {
     if(ctegories.length == 0){
         return next(new Error('not found categories' , {cause:404}));
     }
-    if(lang){
+    if(lang && lang != 'en'){
       const dataAfterTranslate=[];
       for (const category of ctegories) {
         const _id = category._id;
@@ -127,7 +127,20 @@ export const getAllCategories = asyncHandeller(async (req , res , next) => {
         const slug = await translate(category.slug , lang);
         const image = category.image;
         const customId = category.customId;
-        dataAfterTranslate.push({_id , name , slug , customId , image});
+        const Products = [];
+        if(category.Products.length){
+          for (const product of category.Products) {
+            const _id = product._id;
+            const name = await translate(product.name , lang);
+            const description = await translate(product.description , lang);
+            const slug = await translate(product.slug , lang);
+            const images = product.images;
+            const customId = product.customId;
+            const categoryId = product.categoryId;
+            Products.push({_id , name , slug , description , customId , images , categoryId});
+          }
+        }
+        dataAfterTranslate.push({_id , name , slug , customId , image , Products});
       }
       
       return res.status(200).json({message:'success', ctegories:dataAfterTranslate});
