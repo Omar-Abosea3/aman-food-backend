@@ -1,5 +1,6 @@
 import { asyncHandeller } from "../../utils/errorHandlig.js";
 import categoryModel from '../../../DB/models/categoryModel.js';
+import productModel from '../../../DB/models/productsModel.js';
 import slugify from "slugify";
 import cloudinary from "../../utils/cloudinaryConfigration.js";
 import { nanoid } from "nanoid";
@@ -102,6 +103,28 @@ export const updateCategory = asyncHandeller(async (req, res, next) => {
     }
     await category.save();
     return res.status(200).json({ message: "updated done", category });
+});
+
+export const deleteCategory = asyncHandeller(async (req, res, next) => {
+  const { categoryId } = req.params;
+
+  const category = await categoryModel.findByIdAndDelete(categoryId);
+  if (!category) {
+    return next( 
+      new Error("invalid category id or this category not found", {
+        cause: 404,
+      })
+    );
+  }
+
+  await cloudinary.api.delete_resources_by_prefix(
+    `${process.env.PROJECT_FOLDER}/Categories/${category.customId}`
+  );
+  await cloudinary.api.delete_folder(
+    `${process.env.PROJECT_FOLDER}/Categories/${category.customId}`
+  );
+  await productModel.deleteMany({ categoryId });
+  return res.status(200).json({ message: "deleted success", category });
 });
 
 export const getAllCategories = asyncHandeller(async (req , res , next) => {

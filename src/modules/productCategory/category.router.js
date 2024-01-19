@@ -7,6 +7,7 @@ const router = Router();
 router.get('/' , categories.getAllCategories);
 router.post('/' , multerFunction(allowedEstensions.Images).single('image') ,categories.addCategory);
 router.put('/:categoryId' , multerFunction(allowedEstensions.Images).single('image') , categories.updateCategory);
+router.delete('/:categoryId' , categories.deleteCategory);
 router.get('/:id'  , categories.getOneCategory);
 
 

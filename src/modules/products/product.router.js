@@ -7,5 +7,6 @@ const router = Router();
 router.post('/' , multerFunction(allowedEstensions.Images).array('image' , 3) ,products.addProducts);
 router.put('/' , multerFunction(allowedEstensions.Images).array('image' , 3) ,products.updateProduct);
 router.get('/',products.getAllProducts);
+router.delete('/:id',products.deleteProduct);
 
 export default router;

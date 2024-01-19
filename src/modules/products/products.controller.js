@@ -115,6 +115,33 @@ export const updateProduct = asyncHandeller(async (req, res, next) => {
     return res.status(200).json({ message: "updated success", product });
 });
 
+export const deleteProduct = asyncHandeller(async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await productModel.findByIdAndDelete(id).populate([
+    {
+      path:'categoryId',
+    }
+  ]);
+  if (!product) {
+    return next( 
+      new Error("invalid product id or this product not found", {
+        cause: 404,
+      })
+    );
+  }
+
+  const publicIds = [];
+    for (const image of product.images) {
+      publicIds.push(image.public_id);
+    }
+    await cloudinary.api.delete_resources(publicIds);
+    await cloudinary.api.delete_folder(
+      `${process.env.PROJECT_FOLDER}/Categories/${product.categoryId.customId}/Products/${product.customId}`
+    );
+  return res.status(200).json({ message: "deleted success", product });
+});
+
 export const getAllProducts = asyncHandeller(async(req , res , next) => {
     const products = await productModel.find();
     if(!products.length){
