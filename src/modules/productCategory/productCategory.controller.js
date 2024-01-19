@@ -136,7 +136,7 @@ export const getAllCategories = asyncHandeller(async (req , res , next) => {
         const _id = category._id;
         let name;
         if(await translate(category.name , lang) == 'بلح'){
-          name = 'تمور'
+          name = 'التمور'
         }else{
           name = await translate(category.name , lang);
         }
