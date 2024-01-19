@@ -190,9 +190,12 @@ export const getOneCategory = asyncHandeller(async(req , res , next) => {
         if(category.Products.length){
           for (const product of category.Products) {
             const _id = product._id;
-            const name = await translate(product.name , lang);
+            let name = await translate(product.name , lang);
+            if(name.includes('مواعيد')){
+              name = name.replace('مواعيد' ,'التمر' );
+            }
             const description = await translate(product.description , lang);
-            const slug = await translate(product.slug , lang);
+            const slug = slugify(name);
             const images = product.images;
             const customId = product.customId;
             const categoryId = product.categoryId;
