@@ -6,13 +6,11 @@ const productSchema = new Schema({
             type:String,
             required:true,
             unique:true,
-            lowercase:true
         },
         slug:{
             type:String,
             required:true,
             unique:true,
-            lowercase:true
         },
         images:[
             {

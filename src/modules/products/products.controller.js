@@ -88,6 +88,14 @@ export const updateProduct = asyncHandeller(async (req, res, next) => {
 
 
     if (name) {
+      if (await productModel.findOne({ name }) && product.name != name) {
+        return next(
+          new Error(
+            "please enter a different category name , it is dublicated name",
+            { cause: 409 }
+          )
+        );
+      }
       product.name = name;
       const slug = slugify(name);
       product.slug = slug;

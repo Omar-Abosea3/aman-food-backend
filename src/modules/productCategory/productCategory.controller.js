@@ -72,14 +72,7 @@ export const updateCategory = asyncHandeller(async (req, res, next) => {
       );
     }
     if (name) {
-      if (category.name == name) {
-        return next(
-          new Error("please enter different name for this category", {
-            cause: 400,
-          })
-        );
-      }
-      if (await categoryModel.findOne({ name })) {
+      if (await categoryModel.findOne({ name }) && category.name != name) {
         return next(
           new Error(
             "please enter a different category name , it is dublicated name",
