@@ -204,7 +204,7 @@ export const getOneCategory = asyncHandeller(async(req , res , next) => {
           dataAfterTranslate.Products = Products;
         }
         if(dataAfterTranslate.name == 'بلح'){
-          dataAfterTranslate.name= 'تمور';
+          dataAfterTranslate.name= 'التمور';
         }
       return res.status(200).json({message:'success', category:dataAfterTranslate});
     }
