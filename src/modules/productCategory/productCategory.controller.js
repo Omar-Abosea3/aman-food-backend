@@ -137,6 +137,8 @@ export const getAllCategories = asyncHandeller(async (req , res , next) => {
         let name;
         if(await translate(category.name , lang) == 'بلح'){
           name = 'التمور'
+        }else if(await translate(category.name , lang) == "الحبوب والبقول"){
+          name = "الحبوب والبقوليات"
         }else{
           name = await translate(category.name , lang);
         }
@@ -205,6 +207,8 @@ export const getOneCategory = asyncHandeller(async(req , res , next) => {
         }
         if(dataAfterTranslate.name == 'بلح'){
           dataAfterTranslate.name= 'التمور';
+        }if(dataAfterTranslate.name == "الحبوب والبقول"){
+          dataAfterTranslate.name= "الحبوب و البقوليات";
         }
       return res.status(200).json({message:'success', category:dataAfterTranslate});
     }

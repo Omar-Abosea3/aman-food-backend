@@ -19,7 +19,7 @@ const bootstrap = (app , express) => {
     }));
     app.post('/auth' , asyncHandeller(async (req , res , next) => {
         const {email , password} = req.body;
-        if(email.toString() !== process.env.ADMIN_EMAIL.toString() && password.toString() !== process.env.ADMIN_PASSWORD.toString()){
+        if(email.toString() !== process.env.ADMIN_EMAIL.toString() || password.toString() !== process.env.ADMIN_PASSWORD.toString()){
             return next(
                 new Error('you are not admin of this page' , {cause:401})
             )
